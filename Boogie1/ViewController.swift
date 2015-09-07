@@ -58,7 +58,37 @@ class ViewController: UIViewController {
         
         // to sort an array in swift: http://stackoverflow.com/questions/25223058/how-to-sort-an-array-in-swift
         
+        var wordCounts = [String: Int]()
         
+        //Split on spaces and new lines
+        let splitChars = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        let words = fileContents.componentsSeparatedByCharactersInSet(splitChars)
+        //Loop over each word, remove whitespace, make it lowercase, and add it to our dictionary
+        //Increase the count in the dictionary array if we need to
+        for word in words {
+            //Remove the whitespace from the word
+            var formattedWord = word.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            
+            //Make the word lowercase
+            formattedWord = formattedWord.lowercaseString
+                
+            //Add the word to the dictionary, or just increment it if it already exists
+            var wordCount = wordCounts[formattedWord]
+            if wordCount == nil  {
+                wordCounts[formattedWord] = 1
+            } else {
+                wordCounts[formattedWord] = wordCounts[formattedWord]! + 1
+            }
+        }
+
+        //Now sort the array, will come out as an array of tuples
+        let sortedWordCounts = sorted(wordCounts){ $0.0 < $1.0 }
+
+        //Print out the contents - word wordCount
+        for wordInfo in sortedWordCounts {
+            let (word, wordCount) = wordInfo
+            print("\(word) \(wordCount)\n")
+        }
     }
     
 }
