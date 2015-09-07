@@ -61,8 +61,7 @@ class ViewController: UIViewController {
         var wordCounts = [String: Int]()
         
         //Split on spaces and new lines
-        let splitChars = NSCharacterSet.whitespaceAndNewlineCharacterSet()
-        let words = fileContents.componentsSeparatedByCharactersInSet(splitChars)
+        let words = split(fileContents) { $0 == " " || $0 == "\n" || $0 == "\r" }
         //Loop over each word, remove whitespace, make it lowercase, and add it to our dictionary
         //Increase the count in the dictionary array if we need to
         for word in words {
@@ -73,11 +72,10 @@ class ViewController: UIViewController {
             formattedWord = formattedWord.lowercaseString
                 
             //Add the word to the dictionary, or just increment it if it already exists
-            var wordCount = wordCounts[formattedWord]
-            if wordCount == nil  {
-                wordCounts[formattedWord] = 1
+            if let wordCount = wordCounts[formattedWord] {
+                wordCounts[formattedWord] = wordCount + 1
             } else {
-                wordCounts[formattedWord] = wordCounts[formattedWord]! + 1
+                wordCounts[formattedWord] = 1
             }
         }
 
